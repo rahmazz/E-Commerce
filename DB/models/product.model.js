@@ -111,6 +111,7 @@ const productSchema = new Schema(
 
 // we can use this insteade of store patment price in the DB
 //toFixed() --> للتقريب لااقرب رقمين مثلا 
+
 // productSchema.virtual('paymentPrice').get(function(){
 //     if (this.price) {
 //         return Number.parseFloat(this.price - this.price * ((this.discount || 0) / 100)).toFixed(2)

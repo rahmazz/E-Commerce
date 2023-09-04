@@ -14,17 +14,11 @@ router.route(`/`)
     .post(
         auth(endPoint.productCrud),
         fileUpload(fileValidation.image).fields([
-            {name:'defaultImage', maxCount: 1},
             { name : 'image', maxCount: 1 },
             { name : 'coverImages' , maxCount: 5 }
         ]),
         validation(validatores.addProduct),
         asyncHandeller(productController.addProduct)
-    )
-    .delete(
-        auth(endPoint.productCrud),
-        validation(idVal),
-        asyncHandeller(productController.deleteProduct)
     )
     // .get(
     //     asyncHandeller(productController.getAllProduct)
@@ -32,6 +26,12 @@ router.route(`/`)
     .get(
         asyncHandeller(productController.getAllProductByClass)
     )
+
+router.delete('/:id',
+    auth(endPoint.productCrud),
+    validation(idVal),
+    asyncHandeller(productController.deleteProduct)
+)
 
 
 

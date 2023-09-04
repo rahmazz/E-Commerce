@@ -11,10 +11,12 @@ export const asyncHandeller = (controller) => {
 };
 
 export const globalErrorHandelling = (error, req, res, next) => {
-  return res.status(error.status || StatusCodes.INTERNAL_SERVER_ERROR).json({
-    status: error.status || "error",
-    msgError: error.message,
-    stack: error.stack,
-  });
+  // return res.status(error.status || StatusCodes.INTERNAL_SERVER_ERROR).json({
+  //   status: error.cause || "error",
+  //   msgError: error.message,
+  //   stack:error.stack
+  // });
+  return res.json({success:false,message:error.message,stack:error.stack});
 };
+
 

@@ -47,19 +47,20 @@ export const addProduct = async (req, res, next) => {
         req.body.stock = req.body.quantity;
     }
     req.body.paymentPrice =req.body.price - req.body.price * ((req.body.discount || 0) / 100);
+    
     const { secure_url, public_id } = await cloudinary.uploader.upload(
         req.files.image[0].path,
         { folder: `${process.env.FOLDER_CLOUD_NAME}/product/image` }
     );
     req.body.image = { secure_url, public_id };
-    if (req.files.coverImages.length) {
+
+    if (req.files.coverImages?.length) {
         const coverImages = [];
         for (let i = 0; i < req.files.coverImages.length; i++) {
-        const { secure_url, public_id } = await cloudinary.uploader.upload(
+        const  { secure_url, public_id } = await cloudinary.uploader.upload(
             req.files.coverImages[i].path,
-            { folder:`${process.env.FOLDER_CLOUD_NAME}/product/coverImage` }
-        );
-        coverImages.push({ secure_url, public_id });
+            { folder:`${process.env.FOLDER_CLOUD_NAME}/product/coverImage` });
+            coverImages.push({ secure_url, public_id });
         }
         req.body.coverImages = coverImages;
     }
@@ -74,7 +75,7 @@ export const addProduct = async (req, res, next) => {
         })
     );
     console.log(req.body.QrCode);
-    req.createdBy = req.user._id
+    req.body.createdBy = req.user._id
 
 
     const product = await productModel.create(req.body);

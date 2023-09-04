@@ -3,7 +3,7 @@ import { globalValidationFields } from "../../middleWare/validation.js"
 
 export  const addsubCategory = {
     body:joi.object().required().keys({
-        name:globalValidationFields.name,
+        name:globalValidationFields.name.required(),
     }),
     file:globalValidationFields.file.required(),
     params:joi.object().required().keys({

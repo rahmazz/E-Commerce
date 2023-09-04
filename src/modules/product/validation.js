@@ -15,7 +15,7 @@ const arrayParsing = ((value, helper) => {
 
 export const addProduct = {
     body:joi.object().required().keys({
-        name:globalValidationFields.name,
+        name:globalValidationFields.name.required(),
         description:globalValidationFields.name.min(20),
         price:joi.number().min(0).positive().required(),
         discount:joi.number().min(0).max(100).positive(),
@@ -25,11 +25,13 @@ export const addProduct = {
         categoryId:globalValidationFields.id,
         brandId:globalValidationFields.id,
         subcategoryId:globalValidationFields.id,
-        files:joi.object().required().keys({
-            image:joi.array().items(globalValidationFields.file).length(1).required(),
-            coverImages:joi.array().items(globalValidationFields.file).max(5),
-        })
     }),
+    files:joi.object({
+        image:joi.array().items(globalValidationFields.file.required()).length(1).required(),
+        coverImages:joi.array().items(globalValidationFields.file.required()).max(5),
+    }).required(),
+    
     params:joi.object().required().keys({}),
-    query:joi.object().required().keys({})
+    query:joi.object().required().keys({}),
+    
 }

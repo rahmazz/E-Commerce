@@ -1,7 +1,7 @@
 import joi from "joi"
 import { Types } from "mongoose"
 // import * as validatores from "../modules/auth/validation.js"
-const dataMethods = [ 'body' , 'params' , 'headers' , 'file' , 'query']
+const dataMethods = [ 'body' , 'params' , 'headers' , 'files' , 'query']
 
 
 export const validation = (joiSchema) =>{

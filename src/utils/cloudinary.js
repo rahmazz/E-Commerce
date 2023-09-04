@@ -13,3 +13,17 @@ cloudinary.config({
   secure: true,
 });
 export default cloudinary;
+
+
+
+// const imagArr = product.coverImages
+// const ids = imagArr.map((image) => image.public_id)
+
+//add the public_id of the defaultImage too 
+// ids.push(product.defaultImage.public_id)
+
+//delete coverImages
+//const deletedResult = await cloudinary.api.delete_resources(ids)
+
+//delete folder
+////const deletedResult = await cloudinary.api.delete_folder(`${process.env.FOLDER_CLOUD_NAME}/product/coverImages`)

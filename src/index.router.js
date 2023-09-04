@@ -6,7 +6,7 @@ import categoryRouter from "./modules/category/category.router.js"
 import subcategoryRouter from "./modules/subcategory/subcategory.router.js"
 // import orderRouter from "./modules/order/order.router.js"
 import cartRouter from "./modules/cart/cart.router.js"
-// import couponRouter from "./modules/coupon/coupon.router.js"
+import couponRouter from "./modules/coupon/coupon.router.js"
 // import reviewsRouter from "./modules/reviews/review.router.js"
 import brandRouter from "./modules/brand/brand.router.js"
 import { globalErrorHandelling } from "./utils/errorHandeling.js"
@@ -26,7 +26,7 @@ const bootstrap = (app,express) =>{
     app.use(`/category`,categoryRouter)
     app.use(`/subcategory`,subcategoryRouter)
     app.use(`/cart`,cartRouter)
-    // app.use(`/coupon`,couponRouter)
+    app.use(`/coupon`,couponRouter)
     // app.use(`/order`,orderRouter)
     app.use(`/brand`,brandRouter)
     // app.use(`/reviews`,reviewsRouter)
