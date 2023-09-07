@@ -9,6 +9,9 @@ import * as validatores from "./validation.js"
 import { idVal } from "../../utils/globalValidation.js";
 import { auth, roles } from "../../middleWare/authontication.js";
 import { endPoint } from "./product.endPoint.js";
+import reviewRouter from "../reviews/review.router.js"
+
+router.use('/:productId/review',reviewRouter)
 
 router.route(`/`)
     .post(

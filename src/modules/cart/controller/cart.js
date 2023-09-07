@@ -68,8 +68,7 @@ export const addToCart = async (req, res, next) => {
 export const userCart = async (req, res, next) => {
     const cart = await cartModel.findOne({ userId: req.user._id }).populate(
         "products.productId",
-        "name image.secure_url paymentPrice"
-
+        "name image.secure_url paymentPrice  stock "
         //or but them in object but you will need write path select
         //{
         // path:'products.productId',
@@ -78,13 +77,16 @@ export const userCart = async (req, res, next) => {
     );
     let totalPrice = 0;
     cart.products = cart.products.filter((ele) => {
-        if (ele.productId) {
+        if (ele.productId && ele.productId.stock) {
+            if (ele.productId.stock < ele.quantity) {
+                ele.quantity = ele.productId.stock
+            }
         totalPrice += ele.quantity * ele.productId.paymentPrice;
         return ele;
         }
     });
     await cart.save();
-    res.status(StatusCodes.ACCEPTED).json({ message: "done", cart, totalPrice });
+    res.status(StatusCodes.ACCEPTED).json({ message: "done", cart ,totalPrice });
     };
 
 

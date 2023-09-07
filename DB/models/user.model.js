@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from "mongoose";
+import mongoose, { Schema, Types, model } from "mongoose";
 
 const userSchema = new Schema({
     userName:{
@@ -67,7 +67,11 @@ const userSchema = new Schema({
         type:String,
         min:[6,'code lenght must be 6 char'],
         max:[6,'code lenght must be 6 char'],
-    }
+    },
+    favourites:[{
+        type:Types.ObjectId,
+        ref:"Product"
+    }]
 }, 
 {
     timestamps:true

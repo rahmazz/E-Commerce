@@ -30,7 +30,7 @@ const validateObjectId = ( value , helper) =>{
 
 export const globalValidationFields = {
     email:joi.string().email({ minDomainSegments:2 , maxDomainSegments:3 , tlds:{ allow: [ 'com' , 'edu' , 'eg' , 'net'] } }).required(),
-    password:joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+    password:joi.string().pattern(new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)).required(),
     cpassword:joi.string().valid(joi.ref("password")).required(),
     userName:joi.string().alphanum().min(3).max(15).required(),
     name:joi.string().min(3).max(20),

@@ -6,7 +6,6 @@ const orderSchema = new Schema(
             type:Types.ObjectId,
             ref:'User',
             required:true ,
-            unique:true,
         },
         couponId:{
             type:Types.ObjectId,
@@ -38,21 +37,20 @@ const orderSchema = new Schema(
         },
         status:{
             type:String,
-            enum:['canceled','waitPayment','placed','rood','rejected','delivered'],
+            enum:['canceled','waitPayment','placed','onRood','rejected','delivered'],
             default:'placed'
         },
         reason:{
             type:String,
         },
-        allProducts:[{
-            _id:false,
-            product:{
-                name:{type:String,required:true},
-                paymentPrice:{type:String ,required:true},
-                price:{type:Number ,required:true },
-                productId:{type:Types.ObjectId,ref:'Product',required:true }
-            },
-            quantity:{type:Number ,required:true ,default:1 }
+        products:[
+            {
+            // _id:false,
+            productId:{type:Types.ObjectId,ref:'Product',required:true },
+            name:{type:String,required:true},
+            paymentPrice:{type:Number ,required:true},
+            price:{type:Number ,required:true },
+            quantity:{type:Number ,required:true ,default:1 },
         }],
         invoice:{
             type:String,

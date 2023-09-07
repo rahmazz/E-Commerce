@@ -3,7 +3,7 @@ import { Schema, Types, model } from "mongoose";
 
 const couponSchema = new Schema(
     {
-        name:{
+        code:{
             type:String,
             required:true,
             unique:true,
@@ -20,7 +20,8 @@ const couponSchema = new Schema(
         amount:{
             type:Number,
             default:1,
-            max:100
+            max:100,
+            required:true
         },
         usedBy:[{
             type:Types.ObjectId,
