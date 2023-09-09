@@ -174,3 +174,30 @@ export const createOrder = async (req,res,next)=>{
 
     res.status(201).json({message:"done",order})
 }
+
+
+
+
+export const webhook = async(req, res) => {
+
+    const stripe = new Stripe(process.env.STRIPE_KEY)
+    const sig = req.headers['stripe-signature'];
+
+        let event;
+        try {
+        event = stripe.webhooks.constructEvent(req.body, sig, process.env.endpointSecret);
+        } catch (err) {
+        res.status(400).send(`Webhook Error: ${err.message}`);
+        return;
+        }
+
+        const {orderId} = event.data.object.metadata
+        if (event.type != 'checkout.session.completed') {
+            await orderModel.updateOne({_id:orderId},{status:'rejected'})
+            return res.json({message:"Order Rejected"})
+        }
+        await orderModel.updateOne({_id:orderId},{status:'placed'})
+
+        return res.status(200).json({message:"done"})
+
+    }

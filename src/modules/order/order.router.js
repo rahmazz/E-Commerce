@@ -1,4 +1,5 @@
 import { Router } from "express";
+import express from 'express'
 const router = Router()
 
 import * as orderController from "./controller/order.js"
@@ -15,6 +16,6 @@ validation(validatores.createOrder),
 orderController.createOrder)
 
 
-
+router.post('/webhook', express.raw({type: 'application/json'}),orderController.webhook)
 
 export default router
