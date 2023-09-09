@@ -123,7 +123,7 @@ export const getAllSubCategories = async (req, res, next) => {
             path:'createdBy'
             },
         ])
-        const api = new ApiFeatures(mongooseQuery , req.query).filter().pagination().search().sort().select()
+        const api = new ApiFeatures(mongooseQuery , req.query).filter().pagination(subCategoryModel).search().sort().select()
         const subCategory = await api.mongooseQuery
         return res.json({ message: "Done", subCategory });
     };

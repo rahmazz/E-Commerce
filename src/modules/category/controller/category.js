@@ -130,7 +130,7 @@ export const getAllCategories = async (req, res, next) => {
                 path:'createdBy'
             }]
         }]);
-        const api = new ApiFeatures(mongooseQuery,req.query).pagination().search().sort().filter().select()
+        const api = new ApiFeatures(mongooseQuery,req.query).pagination(categoryModel).search().sort().filter().select()
         const category = await api.mongooseQuery
         return res.json({ message: "Done", category });
     };

@@ -9,6 +9,7 @@ import { getAll } from "../../../utils/handlers/globalGetAll.js";
 import { ErrorClass } from "../../../utils/errorClass.js";
 import { deleteOne } from "../../../utils/handlers/globalDelete.js";
 import productModel from "../../../../DB/models/product.model.js";
+import { ApiFeatures } from "../../../utils/apiFeatures.js";
 
 export const addBrand = async(req,res,next) =>{
     const {name} =req.body
@@ -85,7 +86,7 @@ export const deleteBrand = async (req, res, next) => {
 
 export const getAllBrands= async (req, res, next) => {
     const mongooseQuery =  brandModel.find()
-    const api = new ApiFeatures(mongooseQuery , req.query).filter().pagination().search().sort().select()
+    const api = new ApiFeatures(mongooseQuery , req.query).filter().pagination(brandModel).search().sort().select()
     const brands = await api.mongooseQuery
     res.json(brands)
     };
