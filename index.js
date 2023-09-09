@@ -6,6 +6,7 @@ dotenv.config({ path: path.join(__dirname , `./config/.env`)})
 import  express  from "express"
 import bootstrap from "./src/index.router.js"
 import sendEmail from './src/utils/email.js'
+import  { createInvoice } from "./src/utils/pdf.js";
 const app = express()
 const port = process.env.PORT || 5000
 

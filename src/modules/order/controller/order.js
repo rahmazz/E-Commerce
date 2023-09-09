@@ -5,6 +5,9 @@ import orderModel from "../../../../DB/models/order.model.js"
 import productModel from "../../../../DB/models/product.model.js"
 import { ErrorClass } from "../../../utils/errorClass.js"
 import payment from "../../../utils/payment.js"
+import { createInvoice } from "../../../utils/pdf.js"
+import sendEmail from "../../../utils/email.js"
+
 
 
 
@@ -74,7 +77,7 @@ export const createOrder = async (req,res,next)=>{
         notes,
         paymentMethod,
         price,
-        paymentPrice:  price - (price * ((req.body.couponCode?.amount || 0) / 100)).toFixed(2),
+        paymentPrice:  price - (price * ((req.body.coupon?.amount || 0) / 100)).toFixed(2),
         status: paymentMethod == 'card' ? "waitPayment" : "placed"
     })
 
@@ -107,35 +110,67 @@ export const createOrder = async (req,res,next)=>{
         })
     }
     
+    //Generate PDF
+
+    const invoice = {
+    shipping: {
+        name: req.user.name,
+        address: order.address,
+        city: "Cairo",
+        state: "Egypt",
+        country: "Elzamalek",
+        postal_code: 94111
+    },
+    items:order.products,
+    subtotal: price ,
+    total: order.paymentPrice ,
+    invoice_nr: order._id,
+    Date:order.createdAt
+    };
+    await createInvoice(invoice, "invoice.pdf");
+
+
+    //SendEmail to notify user
+    await sendEmail({to:req.user.email, subject:'invoice' , attachments:[{
+        path:'invoice.pdf',
+        contentType:'application/pdf'
+    }]})
+
 
 
     //payment 
-    // if (order.paymentMethod == 'card') {
-    // const stripe = new Stripe(process.env.STRIPE_KEY)
-    // const session = await payment({
-    //     stripe,
-    //     payment_method_types:['card'],
-    //     mode:'payment',
-    //     customer_email:req.user.email,
-    //     metadata:{
-    //         orderId:order._id.toString()
-    //     },
-    //     cancel_url:`${process.env.CANCEL_URL}?orderId=${order._id.toString()}`,
-    //     line_items:order.products.map(product =>{
-    //         return {
-    //             quantity:products.quantity,
-    //             price_data:{
-    //                 currency:'usd',
-    //                 product_data:{
-    //                     name:product.name
-    //                 },
-    //                 unit_amount:product.paymentPrice * 100
-    //             }
-    //         }
-    //     })
-    // })
-    // res.status(201).json({message:"done",order,session,url:session.url})
-    // }
+    if (order.paymentMethod == 'card') {
+    const stripe = new Stripe(process.env.STRIPE_KEY)
+    if (req.body.coupon) {
+        const coupon  = await stripe.coupons.create({ percent_off : req.body.coupon.amount , duration:'once'})
+        req.body.couponId = coupon.id
+    }
+    const session = await payment({
+        stripe,
+        payment_method_types:['card'],
+        mode:'payment',
+        customer_email:req.user.email,
+        metadata:{
+            orderId:order._id.toString()
+        },
+        cancel_url:`${process.env.CANCEL_URL}?orderId=${order._id.toString()}`,
+        line_items:order.products.map(product =>{
+            return {
+                quantity:product.quantity,
+                price_data:{
+                    currency:'egp',
+                    product_data:{
+                        name:product.name
+                    },
+                    unit_amount:product.paymentPrice * 100
+                }
+            }
+        }),
+        discounts:req.body.couponId?[{coupon:req.body.couponId}]:[]
+        
+    })
+    res.status(201).json({message:"done",order,session,url:session.url})
+    }
 
     res.status(201).json({message:"done",order})
 }

@@ -8,6 +8,8 @@ export const  createReview ={
     body:joi.object().required().keys({
         comment:joi.string().required().min(3).max(100),
         rating:joi.number().max(5).min(0).positive(),
+    }),
+    params:joi.object().required().keys({
         productId:globalValidationFields.id,
     })
 }
@@ -20,5 +22,19 @@ export const  updateReview ={
     params:joi.object().required().keys({
         productId:globalValidationFields.id,
         reviewId:globalValidationFields.id,
+    })
+}
+
+
+export const  deleteReview ={
+    params:joi.object().required().keys({
+        reviewId:globalValidationFields.id,
+    })
+}
+
+
+export const  getProductReviews ={
+    params:joi.object().required().keys({
+        productId:globalValidationFields.id,
     })
 }

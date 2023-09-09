@@ -78,6 +78,10 @@ const productSchema = new Schema(
             type:Number,
             default: 0 ,
         },
+        rateNum:{
+            type:Number,
+            default: 0 ,
+        },
         soldItem:{
             type:Number,
             default: 0 ,
@@ -99,15 +103,18 @@ const productSchema = new Schema(
             type:Boolean,
             default:false
         },
-        cloudFolder:{
-            type:String,
-            unique:true
-        }
     },
     {
-        timestamps:true
+        timestamps:true,
+        toJSON:{virtuals:true},
+        toObject:{virtuals:true}
     }
 )
+productSchema.virtual('review',{
+    ref:"Review",
+    localField:'_id',
+    foreignField:'productId'
+})
 
 // we can use this insteade of store patment price in the DB
 //toFixed() --> للتقريب لااقرب رقمين مثلا 

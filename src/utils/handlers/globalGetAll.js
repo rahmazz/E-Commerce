@@ -21,7 +21,6 @@ export const getAll = (model) =>{
         (match) => `$${match}`
     ))
     
-    console.log(queryFields);
     
     const modelCounts = await model.countDocuments();
     
@@ -35,7 +34,6 @@ export const getAll = (model) =>{
         ]
     });  
     reqQuery.select(req.query.fields?.replace(/,/g, ' '));
-    console.log(req.query.sort?.replace(/,/g, ' '));
     const result = await reqQuery;
 
     const countsObject = {};

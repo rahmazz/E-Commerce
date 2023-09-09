@@ -18,15 +18,12 @@ export const auth = (roles = []) =>{
         return asyncHandeller(
         async(req,res,next) =>{
         const {authorization}=req.headers
-        console.log({authorization});
     
         if(!authorization?.startsWith(process.env.TOKEN_BEARER)){
             return next(new ErrorClass("authorization is required or In-Valid Bearer key",{cause:400}))
         }
-        console.log(authorization.startsWith(process.env.TOKEN_BEARER));
     
         const token = authorization.split(process.env.TOKEN_BEARER)[1]
-        console.log({token});
         if (!token) {
             return next(new ErrorClass("token is required",{cause:400}))
         }
@@ -35,14 +32,12 @@ export const auth = (roles = []) =>{
             return next(new ErrorClass("token is expired or logged out",{cause:400}))
         }
         const decoded = jwt.verify(token , process.env.TOKEN_SIGNITURE)
-        console.log({decoded});
     
         if(!decoded?.id){
             return next(new ErrorClass("In-Valid token payload",{cause:400}))
         }
         
         const user = await userModel.findById(decoded.id).select('-password')
-        console.log({user});
         if(!user){
             return next(new ErrorClass("Not register account",{cause:401}))
         }

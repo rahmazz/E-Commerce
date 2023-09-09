@@ -16,7 +16,7 @@ router.post(`/addcategory`,
 auth(endPoint.categoryCrud),
 fileUpload(fileValidation.image).single('image'),
 validation( validatores.addCategory),
-asyncHandeller(categoryController.addCategory))
+categoryController.addCategory)
 
 router.put(`/updatecategory/:categoryId`,
 auth(endPoint.categoryCrud),

@@ -23,16 +23,16 @@ export const addsubCategory = async (req, res, next) => {
     }
     const { secure_url, public_id } = await cloudinary.uploader.upload(
         req.file.path,
-        { folder:  `${process.env.FOLDER_CLOUD_NAME}/subCategory` }
+        { folder: `${process.env.FOLDER_CLOUD_NAME}/Subcategory` }
     );
-    const category = await subCategoryModel.create({
+    const subcategory = await subCategoryModel.create({
         name,
         slug: slugify(name),
         categoryId,
         image: { secure_url, public_id },
         createdBy:req.user._id
     });
-    res.status(StatusCodes.CREATED).json({ message: "Done", category, status: ReasonPhrases.CREATED });
+    res.status(StatusCodes.CREATED).json({ message: "Done", subcategory, status: ReasonPhrases.CREATED });
 };
 
 export const updateSubCategory = async (req, res, next) => {
@@ -74,7 +74,7 @@ export const updateSubCategory = async (req, res, next) => {
 
 export const deleteSubCategory = async (req, res, next) => {
         const { id  } = req.params;
-        const isExist = await subCategoryModel.findByIdAndDelete({id});
+        const isExist = await subCategoryModel.findByIdAndDelete(id);
         if (!isExist) {
             return next(new ErrorClass("Subcategory is not exist" , StatusCodes.NOT_FOUND));
         }
@@ -114,7 +114,6 @@ export const getSubCategoryById = async (req, res, next) => {
 
 
 export const getAllSubCategories = async (req, res, next) => {
-    console.log(req.params);
         const mongooseQuery =  subCategoryModel.find(req.params).populate([
             //is populate with to coloums in same model or table no tnested populate
             {

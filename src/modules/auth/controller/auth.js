@@ -33,7 +33,7 @@ export const signUp = async(req,res,next) =>{
         req.body.phone = CryptoJS.AES.encrypt(req.body.phone,process.env.PHONE_ENCRPTION_KEY).toString()
         req.body.password = hash(req.body.password)
         if (req.body.file) {
-            const {public_id , secure_url} = await cloudinary.uploader.upload( req.file.path,{ folder:`Ecommerce/user` })
+            const {public_id , secure_url} = await cloudinary.uploader.upload( req.file.path,{ folder:`${process.env.FOLDER_CLOUD_NAME}/user` })
             req.body.image =  {public_id , secure_url}
         }
         req.body.code = code
@@ -48,9 +48,10 @@ export const confirmEmail = async(req ,res ,next)=>{
     const user = await userModel.findOneAndUpdate({code},{confirmemail:true , $unset:{ code : 1} },{new:true})
         if(!user){
             return next(new ErrorClass(` user not found`,StatusCodes.NOT_FOUND))
+        }if (user.role == 'User') {
+            await cartModel.create({userId:user._id})
         }
-        await cartModel.create({userId:user._id})
-        res.status(StatusCodes.OK).json({message:"Email confirmed", user})
+        return res.status(StatusCodes.OK).json({message:"Email confirmed", user})
 }
 
 

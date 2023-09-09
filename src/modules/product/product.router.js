@@ -13,6 +13,8 @@ import reviewRouter from "../reviews/review.router.js"
 
 router.use('/:productId/review',reviewRouter)
 
+router.get('/', productController.productList)
+
 router.route(`/`)
     .post(
         auth(endPoint.productCrud),
@@ -26,9 +28,9 @@ router.route(`/`)
     // .get(
     //     asyncHandeller(productController.getAllProduct)
     // )
-    .get(
-        asyncHandeller(productController.getAllProductByClass)
-    )
+    // .get(
+    //     asyncHandeller(productController.getAllProductByClass)
+    // )
 
 router.delete('/:id',
     auth(endPoint.productCrud),

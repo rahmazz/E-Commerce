@@ -18,7 +18,8 @@ const subCategorySchema = new Schema(
             required:true
         },
         image:{
-            type:Object
+            type:Object,
+            required:true
         },
         createdBy:{
             type:Types.ObjectId,

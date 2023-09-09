@@ -5,16 +5,16 @@ import { globalValidationFields } from "../../middleWare/validation.js"
 
 export  const addCategory = {
     body:joi.object().required().keys({
-        name:globalValidationFields.name.required()
+        name:globalValidationFields.name.required(),
+        brandId:globalValidationFields.id
     }),
     file:globalValidationFields.file.required(),
-    params:joi.object().required().keys({}),
-    query:joi.object().required().keys({}),
 }
 
 export  const updateCategory = {
     body:joi.object().required().keys({
-        name:globalValidationFields.name
+        name:globalValidationFields.name,
+        brandId:globalValidationFields.id
     }),
     file:globalValidationFields.file,
     params:joi.object().required().keys({

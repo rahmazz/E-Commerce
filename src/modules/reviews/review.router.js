@@ -12,10 +12,19 @@ auth(endPoint.reviewCrud),
 validation(validators.createReview),
 reviewsController.createReview)
 
-router.put(`/` ,
+router.put(`/:reviewId` ,
 auth(endPoint.reviewCrud),
 validation(validators.updateReview),
 reviewsController.updateReview)
+
+router.delete(`/:reviewId` ,
+auth(endPoint.reviewCrud),
+validation(validators.deleteReview),
+reviewsController.deleteReview)
+
+router.get(`/:productId` ,
+validation(validators.getProductReviews),
+reviewsController.getProductReviews)
 
 
 export default router

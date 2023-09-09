@@ -20,7 +20,6 @@ import {
 
 const bootstrap = (app,express) =>{
     app.use(express.json())
-    // app.use(`/user`,userRouter)
     app.use(`/auth`,authRouter)
     app.use(`/product`,productRouter)
     app.use(`/category`,categoryRouter)

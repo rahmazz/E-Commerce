@@ -12,6 +12,17 @@ import { paigination } from "../../../utils/pagination.js";
 import { getAll } from "../../../utils/handlers/globalGetAll.js";
 import { ApiFeatures } from "../../../utils/apiFeatures.js";
 
+
+export const productList = async(req,res,next) =>{
+    const products = await productModel.find().populate([{
+        path:'review'
+    }])
+    return res.status(201).json({message:"done",products})
+}
+
+
+
+
 export const addProduct = async (req, res, next) => {
     const CategoryExist = await categoryModel.findById(req.body.categoryId);
     if (!CategoryExist) {
@@ -74,7 +85,6 @@ export const addProduct = async (req, res, next) => {
         paymentPrice: req.body.paymentPrice,
         })
     );
-    console.log(req.body.QrCode);
     req.body.createdBy = req.user._id
 
 
